@@ -1,0 +1,53 @@
+name: New cellar model
+description: Help add support for another Haier hOn wine cellar
+labels: ["new model"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks! See [CONTRIBUTING.md](https://github.com/crivabene/ha-hon-wine-cellar/blob/main/CONTRIBUTING.md#adding-a-cellar-model) for how to
+        record what the hOn app sends. Diagnostics remove credentials, account ids, MAC, serial
+        number and location, but please have a look before attaching them.
+  - type: input
+    id: model
+    attributes:
+      label: Model
+      description: As shown in the hOn app or on the label, e.g. HWS42GDAU1
+    validations:
+      required: true
+  - type: dropdown
+    id: zones
+    attributes:
+      label: Zones
+      options: ["1", "2", "3", "Other"]
+    validations:
+      required: true
+  - type: textarea
+    id: works
+    attributes:
+      label: What already works
+      description: Entities that appear and behave correctly, and what is missing or wrong.
+  - type: textarea
+    id: actions
+    attributes:
+      label: Actions done in the hOn app
+      description: One per line, with the time, e.g. "10:02 zone 2 → White 11 °C".
+      placeholder: |
+        10:02 zone 2 → White 11 °C
+        10:05 light on
+    validations:
+      required: true
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Diagnostics
+      description: Drag the downloaded diagnostics file(s) here.
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Checks
+      options:
+        - label: I looked through the diagnostics and they contain no personal data.
+          required: true

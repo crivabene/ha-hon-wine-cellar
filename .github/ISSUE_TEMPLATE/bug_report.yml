@@ -1,0 +1,36 @@
+name: Bug report
+description: Something does not work as expected
+labels: ["bug"]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you did, what you expected and what happened instead.
+    validations:
+      required: true
+  - type: input
+    id: model
+    attributes:
+      label: Cellar model
+    validations:
+      required: true
+  - type: input
+    id: versions
+    attributes:
+      label: Versions
+      description: Integration and Home Assistant versions
+      placeholder: hOn Wine Cellar 0.1.0, Home Assistant 2026.10.2
+    validations:
+      required: true
+  - type: textarea
+    id: diagnostics
+    attributes:
+      label: Diagnostics
+      description: Settings → Devices & services → hOn Wine Cellar → ⋮ → Download diagnostics.
+  - type: textarea
+    id: logs
+    attributes:
+      label: Debug log
+      description: "With `custom_components.hon_wine: debug`. Remove anything personal."
+      render: text

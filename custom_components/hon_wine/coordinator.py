@@ -303,13 +303,14 @@ class WineCellarCoordinator(DataUpdateCoordinator[dict[str, str]]):
                     "high": str(program.high),
                 },
             )
-        keys, other = ZONES[zone], ZONES[3 - zone]
+        keys = ZONES[zone]
+        others = [k for z, ks in ZONES.items() if z != zone for k in (ks["program"], ks["target"])]
         # Recipes carry no program code: the app sends only the temperature
         parameters = {keys["target"]: str(temperature)}
         if program.code is not None:
             parameters = {keys["program"]: program.code} | parameters
         command = Command("startProgram", parameters, program.ancillary, program.name)
-        await self._write(command, untouched=[other["program"], other["target"]])
+        await self._write(command, untouched=others)
         self._track_command(
             {
                 "programName": program.name,

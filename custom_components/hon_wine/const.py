@@ -14,7 +14,9 @@ USER_AGENT = (
 
 WINE_CELLAR = "WC"
 
-# Parameter names per zone, as the cellar reports and the hOn app sends them
+# Parameter names per zone, as the cellar reports and the hOn app sends them.
+# Entities are only created for the parameters a cellar actually reports, so single-zone
+# models work as they are; a model with more zones only needs another entry here.
 ZONES = {
     1: {"program": "prCode", "target": "tempSel", "temp": "temp", "humidity": "humidityZ1"},
     2: {"program": "prCodeZ2", "target": "tempSelZ2", "temp": "tempZ2", "humidity": "humidityZ2"},

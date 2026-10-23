@@ -347,3 +347,21 @@ async def test_device_name_translated_without_app_name(hass, cloud, config_entry
     device = _device(hass, config_entry)
     assert device.name == "Wine cellar"
     assert hass.states.get("sensor.wine_cellar_zone_1_temperature") is not None
+
+
+async def test_single_zone_cellar(hass, cloud, config_entry):
+    """A model without zone 2 parameters gets zone 1 entities only, and writes still work."""
+    for key in ("prCodeZ2", "tempSelZ2", "tempZ2", "humidityZ2"):
+        cloud.state.pop(key)
+    assert await hass.config_entries.async_setup(config_entry.entry_id)
+    await hass.async_block_till_done()
+    assert hass.states.get("select.my_cellar_zone_1_program").state == "red"
+    assert hass.states.get("select.my_cellar_zone_2_program") is None
+    assert hass.states.get("number.my_cellar_zone_2_target_temperature") is None
+    await hass.services.async_call(
+        "number",
+        "set_value",
+        {"entity_id": "number.my_cellar_zone_1_target_temperature", "value": 18},
+        blocking=True,
+    )
+    assert cloud.sent[-1]["parameters"] == {"prCode": "1", "tempSel": "18"}

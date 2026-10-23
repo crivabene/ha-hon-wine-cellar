@@ -105,6 +105,11 @@ CI also runs Home Assistant's `hassfest` and the HACS validation.
 The cloud is replaced by responses captured from a real cellar (anonymised) in
 `tests/hon_wine/fixtures.py`.
 
+## Contributing
+
+Support for other hOn wine cellars is very welcome, and usually needs only a few diagnostics files
+recorded while using the hOn app: see [CONTRIBUTING.md](CONTRIBUTING.md).
+
 ## Credits
 
 The hOn endpoints and the CIAM/PKCE login are those of the hOn mobile app, as documented by
