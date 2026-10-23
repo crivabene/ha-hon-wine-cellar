@@ -1,0 +1,119 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "description": "E-Mail-Adresse und Passwort deines hOn-App-Kontos",
+        "data": {
+          "email": "E-Mail",
+          "password": "Passwort"
+        }
+      },
+      "reauth_confirm": {
+        "description": "hOn akzeptiert das Passwort für {email} nicht mehr. Gib das aktuelle ein.",
+        "data": {
+          "password": "Passwort"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Anmeldung fehlgeschlagen: Prüfe E-Mail-Adresse und Passwort.",
+      "cannot_connect": "Die hOn-Cloud ist nicht erreichbar."
+    },
+    "abort": {
+      "already_configured": "Dieses hOn-Konto ist bereits eingerichtet.",
+      "reauth_successful": "Passwort aktualisiert."
+    }
+  },
+  "device": {
+    "cellar": {
+      "name": "Weinkühlschrank"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "zone_1_temperature": {
+        "name": "Temperatur Zone 1"
+      },
+      "zone_2_temperature": {
+        "name": "Temperatur Zone 2"
+      },
+      "zone_1_humidity": {
+        "name": "Luftfeuchtigkeit Zone 1"
+      },
+      "zone_2_humidity": {
+        "name": "Luftfeuchtigkeit Zone 2"
+      },
+      "room_temperature": {
+        "name": "Raumtemperatur"
+      },
+      "error": {
+        "name": "Fehlercode"
+      }
+    },
+    "number": {
+      "zone_1_target": {
+        "name": "Solltemperatur Zone 1"
+      },
+      "zone_2_target": {
+        "name": "Solltemperatur Zone 2"
+      }
+    },
+    "select": {
+      "zone_1_program": {
+        "name": "Programm Zone 1",
+        "state": {
+          "red": "Rotwein",
+          "white": "Weißwein",
+          "sparkling": "Schaumwein",
+          "iot_rose": "Rosé",
+          "iot_champagne": "Champagner",
+          "iot_dessert": "Dessertwein",
+          "iot_fortified": "Likörwein",
+          "iot_whisky": "Whisky"
+        }
+      },
+      "zone_2_program": {
+        "name": "Programm Zone 2",
+        "state": {
+          "red": "Rotwein",
+          "white": "Weißwein",
+          "sparkling": "Schaumwein",
+          "iot_rose": "Rosé",
+          "iot_champagne": "Champagner",
+          "iot_dessert": "Dessertwein",
+          "iot_fortified": "Likörwein",
+          "iot_whisky": "Whisky"
+        }
+      }
+    },
+    "light": {
+      "light": {
+        "name": "Licht"
+      }
+    }
+  },
+  "exceptions": {
+    "command_failed": {
+      "message": "Der Weinkühlschrank hat den Befehl nicht angenommen: {error}"
+    },
+    "out_of_range": {
+      "message": "{temperature} °C liegt außerhalb des Bereichs von {program} ({low}–{high} °C)"
+    },
+    "no_program": {
+      "message": "Kein Programm deckt {temperature} °C ab"
+    }
+  },
+  "issues": {
+    "unexpected_change": {
+      "title": "Unerwartete Änderung am Weinkühlschrank",
+      "fix_flow": {
+        "step": {
+          "confirm": {
+            "title": "Unerwartete Änderung am Weinkühlschrank",
+            "description": "Nach einem Befehl von Home Assistant hat sich am Weinkühlschrank auch Folgendes geändert: {changes}.\n\nPrüfe beide Zonen in der hOn-App und bestätige dann, um diese Warnung zu schließen."
+          }
+        }
+      }
+    }
+  }
+}

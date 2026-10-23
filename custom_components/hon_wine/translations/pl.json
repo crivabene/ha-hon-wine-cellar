@@ -1,0 +1,119 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "description": "E-mail i hasło konta w aplikacji hOn",
+        "data": {
+          "email": "E-mail",
+          "password": "Hasło"
+        }
+      },
+      "reauth_confirm": {
+        "description": "hOn nie akceptuje już hasła dla {email}. Wpisz aktualne hasło.",
+        "data": {
+          "password": "Hasło"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Logowanie nie powiodło się: sprawdź e-mail i hasło.",
+      "cannot_connect": "Nie można połączyć się z chmurą hOn."
+    },
+    "abort": {
+      "already_configured": "To konto hOn jest już skonfigurowane.",
+      "reauth_successful": "Hasło zostało zaktualizowane."
+    }
+  },
+  "device": {
+    "cellar": {
+      "name": "Chłodziarka do wina"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "zone_1_temperature": {
+        "name": "Temperatura strefy 1"
+      },
+      "zone_2_temperature": {
+        "name": "Temperatura strefy 2"
+      },
+      "zone_1_humidity": {
+        "name": "Wilgotność strefy 1"
+      },
+      "zone_2_humidity": {
+        "name": "Wilgotność strefy 2"
+      },
+      "room_temperature": {
+        "name": "Temperatura otoczenia"
+      },
+      "error": {
+        "name": "Kod błędu"
+      }
+    },
+    "number": {
+      "zone_1_target": {
+        "name": "Temperatura zadana strefy 1"
+      },
+      "zone_2_target": {
+        "name": "Temperatura zadana strefy 2"
+      }
+    },
+    "select": {
+      "zone_1_program": {
+        "name": "Program strefy 1",
+        "state": {
+          "red": "Czerwone",
+          "white": "Białe",
+          "sparkling": "Musujące",
+          "iot_rose": "Różowe",
+          "iot_champagne": "Szampan",
+          "iot_dessert": "Wino deserowe",
+          "iot_fortified": "Wino wzmacniane",
+          "iot_whisky": "Whisky"
+        }
+      },
+      "zone_2_program": {
+        "name": "Program strefy 2",
+        "state": {
+          "red": "Czerwone",
+          "white": "Białe",
+          "sparkling": "Musujące",
+          "iot_rose": "Różowe",
+          "iot_champagne": "Szampan",
+          "iot_dessert": "Wino deserowe",
+          "iot_fortified": "Wino wzmacniane",
+          "iot_whisky": "Whisky"
+        }
+      }
+    },
+    "light": {
+      "light": {
+        "name": "Oświetlenie"
+      }
+    }
+  },
+  "exceptions": {
+    "command_failed": {
+      "message": "Chłodziarka do wina nie przyjęła polecenia: {error}"
+    },
+    "out_of_range": {
+      "message": "{temperature} °C jest poza zakresem programu {program} ({low}–{high} °C)"
+    },
+    "no_program": {
+      "message": "Żaden program nie obejmuje {temperature} °C"
+    }
+  },
+  "issues": {
+    "unexpected_change": {
+      "title": "Nieoczekiwana zmiana w chłodziarce do wina",
+      "fix_flow": {
+        "step": {
+          "confirm": {
+            "title": "Nieoczekiwana zmiana w chłodziarce do wina",
+            "description": "Po poleceniu z Home Assistant w chłodziarce zmieniło się również: {changes}.\n\nSprawdź obie strefy w aplikacji hOn, a następnie potwierdź, aby zamknąć to ostrzeżenie."
+          }
+        }
+      }
+    }
+  }
+}

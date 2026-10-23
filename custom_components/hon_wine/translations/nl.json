@@ -1,0 +1,119 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "description": "E-mailadres en wachtwoord van je hOn-app-account",
+        "data": {
+          "email": "E-mailadres",
+          "password": "Wachtwoord"
+        }
+      },
+      "reauth_confirm": {
+        "description": "hOn accepteert het wachtwoord voor {email} niet meer. Voer het huidige wachtwoord in.",
+        "data": {
+          "password": "Wachtwoord"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Inloggen mislukt: controleer e-mailadres en wachtwoord.",
+      "cannot_connect": "De hOn-cloud is niet bereikbaar."
+    },
+    "abort": {
+      "already_configured": "Dit hOn-account is al ingesteld.",
+      "reauth_successful": "Wachtwoord bijgewerkt."
+    }
+  },
+  "device": {
+    "cellar": {
+      "name": "Wijnklimaatkast"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "zone_1_temperature": {
+        "name": "Temperatuur zone 1"
+      },
+      "zone_2_temperature": {
+        "name": "Temperatuur zone 2"
+      },
+      "zone_1_humidity": {
+        "name": "Luchtvochtigheid zone 1"
+      },
+      "zone_2_humidity": {
+        "name": "Luchtvochtigheid zone 2"
+      },
+      "room_temperature": {
+        "name": "Kamertemperatuur"
+      },
+      "error": {
+        "name": "Foutcode"
+      }
+    },
+    "number": {
+      "zone_1_target": {
+        "name": "Doeltemperatuur zone 1"
+      },
+      "zone_2_target": {
+        "name": "Doeltemperatuur zone 2"
+      }
+    },
+    "select": {
+      "zone_1_program": {
+        "name": "Programma zone 1",
+        "state": {
+          "red": "Rode wijn",
+          "white": "Witte wijn",
+          "sparkling": "Mousserende wijn",
+          "iot_rose": "Rosé",
+          "iot_champagne": "Champagne",
+          "iot_dessert": "Dessertwijn",
+          "iot_fortified": "Versterkte wijn",
+          "iot_whisky": "Whisky"
+        }
+      },
+      "zone_2_program": {
+        "name": "Programma zone 2",
+        "state": {
+          "red": "Rode wijn",
+          "white": "Witte wijn",
+          "sparkling": "Mousserende wijn",
+          "iot_rose": "Rosé",
+          "iot_champagne": "Champagne",
+          "iot_dessert": "Dessertwijn",
+          "iot_fortified": "Versterkte wijn",
+          "iot_whisky": "Whisky"
+        }
+      }
+    },
+    "light": {
+      "light": {
+        "name": "Verlichting"
+      }
+    }
+  },
+  "exceptions": {
+    "command_failed": {
+      "message": "De wijnklimaatkast heeft de opdracht niet geaccepteerd: {error}"
+    },
+    "out_of_range": {
+      "message": "{temperature} °C valt buiten het bereik van {program} ({low}–{high} °C)"
+    },
+    "no_program": {
+      "message": "Geen programma dekt {temperature} °C"
+    }
+  },
+  "issues": {
+    "unexpected_change": {
+      "title": "Onverwachte wijziging in de wijnklimaatkast",
+      "fix_flow": {
+        "step": {
+          "confirm": {
+            "title": "Onverwachte wijziging in de wijnklimaatkast",
+            "description": "Na een opdracht van Home Assistant is in de wijnklimaatkast ook dit gewijzigd: {changes}.\n\nControleer beide zones in de hOn-app en bevestig daarna om deze waarschuwing te sluiten."
+          }
+        }
+      }
+    }
+  }
+}

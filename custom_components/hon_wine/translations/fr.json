@@ -1,0 +1,119 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "description": "E-mail et mot de passe de votre compte de l'application hOn",
+        "data": {
+          "email": "E-mail",
+          "password": "Mot de passe"
+        }
+      },
+      "reauth_confirm": {
+        "description": "hOn n'accepte plus le mot de passe de {email}. Saisissez le mot de passe actuel.",
+        "data": {
+          "password": "Mot de passe"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Échec de la connexion : vérifiez l'e-mail et le mot de passe.",
+      "cannot_connect": "Impossible de joindre le cloud hOn."
+    },
+    "abort": {
+      "already_configured": "Ce compte hOn est déjà configuré.",
+      "reauth_successful": "Mot de passe mis à jour."
+    }
+  },
+  "device": {
+    "cellar": {
+      "name": "Cave à vin"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "zone_1_temperature": {
+        "name": "Température zone 1"
+      },
+      "zone_2_temperature": {
+        "name": "Température zone 2"
+      },
+      "zone_1_humidity": {
+        "name": "Humidité zone 1"
+      },
+      "zone_2_humidity": {
+        "name": "Humidité zone 2"
+      },
+      "room_temperature": {
+        "name": "Température ambiante"
+      },
+      "error": {
+        "name": "Code d'erreur"
+      }
+    },
+    "number": {
+      "zone_1_target": {
+        "name": "Température de consigne zone 1"
+      },
+      "zone_2_target": {
+        "name": "Température de consigne zone 2"
+      }
+    },
+    "select": {
+      "zone_1_program": {
+        "name": "Programme zone 1",
+        "state": {
+          "red": "Vin rouge",
+          "white": "Vin blanc",
+          "sparkling": "Vin pétillant",
+          "iot_rose": "Rosé",
+          "iot_champagne": "Champagne",
+          "iot_dessert": "Vin de dessert",
+          "iot_fortified": "Vin muté",
+          "iot_whisky": "Whisky"
+        }
+      },
+      "zone_2_program": {
+        "name": "Programme zone 2",
+        "state": {
+          "red": "Vin rouge",
+          "white": "Vin blanc",
+          "sparkling": "Vin pétillant",
+          "iot_rose": "Rosé",
+          "iot_champagne": "Champagne",
+          "iot_dessert": "Vin de dessert",
+          "iot_fortified": "Vin muté",
+          "iot_whisky": "Whisky"
+        }
+      }
+    },
+    "light": {
+      "light": {
+        "name": "Éclairage"
+      }
+    }
+  },
+  "exceptions": {
+    "command_failed": {
+      "message": "La cave à vin n'a pas accepté la commande : {error}"
+    },
+    "out_of_range": {
+      "message": "{temperature} °C est hors de la plage de {program} ({low}–{high} °C)"
+    },
+    "no_program": {
+      "message": "Aucun programme ne couvre {temperature} °C"
+    }
+  },
+  "issues": {
+    "unexpected_change": {
+      "title": "Modification inattendue de la cave à vin",
+      "fix_flow": {
+        "step": {
+          "confirm": {
+            "title": "Modification inattendue de la cave à vin",
+            "description": "Après une commande de Home Assistant, la cave a aussi changé : {changes}.\n\nVérifiez les deux zones dans l'application hOn, puis confirmez pour fermer cet avertissement."
+          }
+        }
+      }
+    }
+  }
+}

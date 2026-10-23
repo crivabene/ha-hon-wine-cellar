@@ -70,11 +70,20 @@ validation; all checks must pass.
 Please keep:
 
 - **English** for code, comments, logs and docs.
-- **Translations** in sync: every key in `translations/en.json` must exist in `it.json`, with the
-  same `{placeholders}`. New languages are welcome.
+- **Translations** in sync: see below.
 - **Load on the hOn cloud** low: no polling faster than once a minute.
 - **Personal data** out of the repository: no real MAC addresses, ids, emails or locations in
   fixtures, issues or logs.
+
+## Translations
+
+`custom_components/hon_wine/translations/en.json` is the source. Every other language file must
+have exactly the same keys and the same `{placeholders}`; a test checks this for all files.
+
+- **Corrections**: just edit the file. Apart from English and Italian, the translations were
+  written without a native speaker's review, so improvements are very welcome.
+- **New language**: copy `en.json` to `<language code>.json` (the code Home Assistant uses, e.g.
+  `sv`, `cs`) and translate the values, never the keys or the `{placeholders}`.
 
 ## Reporting bugs
 

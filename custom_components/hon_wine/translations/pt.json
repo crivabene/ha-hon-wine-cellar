@@ -1,0 +1,119 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "description": "E-mail e palavra-passe da sua conta da aplicação hOn",
+        "data": {
+          "email": "E-mail",
+          "password": "Palavra-passe"
+        }
+      },
+      "reauth_confirm": {
+        "description": "O hOn já não aceita a palavra-passe de {email}. Introduza a atual.",
+        "data": {
+          "password": "Palavra-passe"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Falha no início de sessão: verifique o e-mail e a palavra-passe.",
+      "cannot_connect": "Não foi possível contactar a cloud hOn."
+    },
+    "abort": {
+      "already_configured": "Esta conta hOn já está configurada.",
+      "reauth_successful": "Palavra-passe atualizada."
+    }
+  },
+  "device": {
+    "cellar": {
+      "name": "Garrafeira"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "zone_1_temperature": {
+        "name": "Temperatura zona 1"
+      },
+      "zone_2_temperature": {
+        "name": "Temperatura zona 2"
+      },
+      "zone_1_humidity": {
+        "name": "Humidade zona 1"
+      },
+      "zone_2_humidity": {
+        "name": "Humidade zona 2"
+      },
+      "room_temperature": {
+        "name": "Temperatura ambiente"
+      },
+      "error": {
+        "name": "Código de erro"
+      }
+    },
+    "number": {
+      "zone_1_target": {
+        "name": "Temperatura definida zona 1"
+      },
+      "zone_2_target": {
+        "name": "Temperatura definida zona 2"
+      }
+    },
+    "select": {
+      "zone_1_program": {
+        "name": "Programa zona 1",
+        "state": {
+          "red": "Tinto",
+          "white": "Branco",
+          "sparkling": "Espumante",
+          "iot_rose": "Rosé",
+          "iot_champagne": "Champanhe",
+          "iot_dessert": "Vinho de sobremesa",
+          "iot_fortified": "Vinho fortificado",
+          "iot_whisky": "Whisky"
+        }
+      },
+      "zone_2_program": {
+        "name": "Programa zona 2",
+        "state": {
+          "red": "Tinto",
+          "white": "Branco",
+          "sparkling": "Espumante",
+          "iot_rose": "Rosé",
+          "iot_champagne": "Champanhe",
+          "iot_dessert": "Vinho de sobremesa",
+          "iot_fortified": "Vinho fortificado",
+          "iot_whisky": "Whisky"
+        }
+      }
+    },
+    "light": {
+      "light": {
+        "name": "Luz"
+      }
+    }
+  },
+  "exceptions": {
+    "command_failed": {
+      "message": "A garrafeira não aceitou o comando: {error}"
+    },
+    "out_of_range": {
+      "message": "{temperature} °C está fora do intervalo de {program} ({low}–{high} °C)"
+    },
+    "no_program": {
+      "message": "Nenhum programa abrange {temperature} °C"
+    }
+  },
+  "issues": {
+    "unexpected_change": {
+      "title": "Alteração inesperada na garrafeira",
+      "fix_flow": {
+        "step": {
+          "confirm": {
+            "title": "Alteração inesperada na garrafeira",
+            "description": "Após um comando do Home Assistant, a garrafeira também mudou: {changes}.\n\nVerifique as duas zonas na aplicação hOn e confirme para fechar este aviso."
+          }
+        }
+      }
+    }
+  }
+}

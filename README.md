@@ -197,7 +197,11 @@ would still reset the zones.
 
 ## Languages
 
-English and Italian.
+English, Italian, German, French, Spanish, Portuguese, Dutch and Polish. Home Assistant picks the
+one matching its language setting.
+
+Corrections from native speakers and new languages are welcome: see
+[CONTRIBUTING.md](CONTRIBUTING.md#translations).
 
 ## Troubleshooting
 

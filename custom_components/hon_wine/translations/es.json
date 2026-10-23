@@ -1,0 +1,119 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "description": "Correo electrónico y contraseña de tu cuenta de la app hOn",
+        "data": {
+          "email": "Correo electrónico",
+          "password": "Contraseña"
+        }
+      },
+      "reauth_confirm": {
+        "description": "hOn ya no acepta la contraseña de {email}. Introduce la actual.",
+        "data": {
+          "password": "Contraseña"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Error al iniciar sesión: revisa el correo electrónico y la contraseña.",
+      "cannot_connect": "No se pudo conectar con la nube de hOn."
+    },
+    "abort": {
+      "already_configured": "Esta cuenta de hOn ya está configurada.",
+      "reauth_successful": "Contraseña actualizada."
+    }
+  },
+  "device": {
+    "cellar": {
+      "name": "Vinoteca"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "zone_1_temperature": {
+        "name": "Temperatura zona 1"
+      },
+      "zone_2_temperature": {
+        "name": "Temperatura zona 2"
+      },
+      "zone_1_humidity": {
+        "name": "Humedad zona 1"
+      },
+      "zone_2_humidity": {
+        "name": "Humedad zona 2"
+      },
+      "room_temperature": {
+        "name": "Temperatura ambiente"
+      },
+      "error": {
+        "name": "Código de error"
+      }
+    },
+    "number": {
+      "zone_1_target": {
+        "name": "Temperatura objetivo zona 1"
+      },
+      "zone_2_target": {
+        "name": "Temperatura objetivo zona 2"
+      }
+    },
+    "select": {
+      "zone_1_program": {
+        "name": "Programa zona 1",
+        "state": {
+          "red": "Tinto",
+          "white": "Blanco",
+          "sparkling": "Espumoso",
+          "iot_rose": "Rosado",
+          "iot_champagne": "Champán",
+          "iot_dessert": "Vino de postre",
+          "iot_fortified": "Vino generoso",
+          "iot_whisky": "Whisky"
+        }
+      },
+      "zone_2_program": {
+        "name": "Programa zona 2",
+        "state": {
+          "red": "Tinto",
+          "white": "Blanco",
+          "sparkling": "Espumoso",
+          "iot_rose": "Rosado",
+          "iot_champagne": "Champán",
+          "iot_dessert": "Vino de postre",
+          "iot_fortified": "Vino generoso",
+          "iot_whisky": "Whisky"
+        }
+      }
+    },
+    "light": {
+      "light": {
+        "name": "Luz"
+      }
+    }
+  },
+  "exceptions": {
+    "command_failed": {
+      "message": "La vinoteca no aceptó el comando: {error}"
+    },
+    "out_of_range": {
+      "message": "{temperature} °C está fuera del rango de {program} ({low}–{high} °C)"
+    },
+    "no_program": {
+      "message": "Ningún programa cubre {temperature} °C"
+    }
+  },
+  "issues": {
+    "unexpected_change": {
+      "title": "Cambio inesperado en la vinoteca",
+      "fix_flow": {
+        "step": {
+          "confirm": {
+            "title": "Cambio inesperado en la vinoteca",
+            "description": "Tras un comando de Home Assistant, la vinoteca también cambió: {changes}.\n\nRevisa ambas zonas en la app hOn y confirma para cerrar este aviso."
+          }
+        }
+      }
+    }
+  }
+}
