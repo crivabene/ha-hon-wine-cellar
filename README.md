@@ -28,8 +28,8 @@ This integration only uses what the app uses, as read from the cloud's own comma
 | Action | Command |
 |---|---|
 | Light | `startProgram {lightStatus}` |
-| Zone 1 program | `startProgram PROGRAMS.WC.<PROGRAM> {prCode, tempSel}`, family `[dashboard]` |
-| Zone 2 program | `startProgram PROGRAMS.WC.<PROGRAM> {prCodeZ2, tempSelZ2}`, family `[dashboard]` |
+| Upper zone (1) program | `startProgram PROGRAMS.WC.<PROGRAM> {prCode, tempSel}`, family `[dashboard]` |
+| Lower zone (2) program | `startProgram PROGRAMS.WC.<PROGRAM> {prCodeZ2, tempSelZ2}`, family `[dashboard]` |
 | Recipe | `startProgram PROGRAMS.WC.IOT_<RECIPE> {tempSel or tempSelZ2}`, family `[download]` |
 
 After every write, the parameters it must not touch are watched for five minutes; an unexpected
@@ -39,13 +39,27 @@ change raises a repair issue.
 
 Per cellar:
 
-- **Zone 1/2 program** (select): red 13–20 °C, white 9–12 °C, sparkling 5–8 °C, plus the app's
+- **Upper/lower zone program** (select): red 13–20 °C, white 9–12 °C, sparkling 5–8 °C, plus the app's
   recipes (rosé 6, champagne 6, dessert 8, fortified 15, whisky 17 °C)
-- **Zone 1/2 target temperature** (number, 5–20 °C): the program follows from the range
-- **Zone 1/2 temperature** and **humidity**, **room temperature**, **error code** (sensors)
+- **Upper/lower zone target temperature** (number, 5–20 °C): the program follows from the range
+- **Upper/lower zone temperature** and **humidity**, **room temperature**, **error code** (sensors)
 - **Light**
 
 Programs, codes and ranges are read from the cloud's definitions for the model, not hard-coded.
+On a cellar with one zone, or more than two, zones are numbered instead of upper/lower.
+
+## Supported models
+
+| Model | Status |
+|---|---|
+| HWS42GDAU1 | **Tested**: everything above, including recipes |
+| HWS77GDAU1 | Expected to work: same behaviour reported in [Andre0512/hon#238](https://github.com/Andre0512/hon/issues/238), not yet confirmed |
+| Model id 666 ("WC666") | Expected to work: same parameters reported in [hon-revived#78](https://github.com/mmalolepszy/hon-revived/pull/78), not yet confirmed |
+
+Other hOn wine cellars (appliance type `WC`) may work too: programs and zones are read from the
+cloud for each model. If you try one, please report how it went with the
+[New cellar model](https://github.com/crivabene/ha-hon-wine-cellar/issues/new?template=new_model.yml)
+form, whether it works or not.
 
 ### Dashboard example
 
@@ -63,41 +77,41 @@ cards:
     square: false
     cards:
       - type: tile
-        entity: sensor.wine_cellar_zone_1_temperature
-        name: Zone 1
+        entity: sensor.wine_cellar_upper_zone_temperature
+        name: Upper zone
         color: red
       - type: tile
-        entity: sensor.wine_cellar_zone_2_temperature
-        name: Zone 2
+        entity: sensor.wine_cellar_lower_zone_temperature
+        name: Lower zone
         color: amber
       - type: tile
-        entity: select.wine_cellar_zone_1_program
+        entity: select.wine_cellar_upper_zone_program
         name: Program
         features:
           - type: select-options
       - type: tile
-        entity: select.wine_cellar_zone_2_program
+        entity: select.wine_cellar_lower_zone_program
         name: Program
         features:
           - type: select-options
       - type: tile
-        entity: number.wine_cellar_zone_1_target_temperature
+        entity: number.wine_cellar_upper_zone_target_temperature
         name: Target
         features:
           - type: numeric-input
             style: buttons
       - type: tile
-        entity: number.wine_cellar_zone_2_target_temperature
+        entity: number.wine_cellar_lower_zone_target_temperature
         name: Target
         features:
           - type: numeric-input
             style: buttons
       - type: tile
-        entity: sensor.wine_cellar_zone_1_humidity
+        entity: sensor.wine_cellar_upper_zone_humidity
         name: Humidity
         color: blue
       - type: tile
-        entity: sensor.wine_cellar_zone_2_humidity
+        entity: sensor.wine_cellar_lower_zone_humidity
         name: Humidity
         color: blue
   - type: tile
@@ -119,10 +133,10 @@ cards:
     title: Last 48 hours
     hours_to_show: 48
     entities:
-      - entity: sensor.wine_cellar_zone_1_temperature
-        name: Zone 1
-      - entity: sensor.wine_cellar_zone_2_temperature
-        name: Zone 2
+      - entity: sensor.wine_cellar_upper_zone_temperature
+        name: Upper zone
+      - entity: sensor.wine_cellar_lower_zone_temperature
+        name: Lower zone
       - entity: sensor.wine_cellar_room_temperature
         name: Room
 ```
@@ -133,15 +147,17 @@ set up. The example uses the English ones; if yours differ, find them under
 
 | English | Italian |
 |---|---|
-| `sensor.wine_cellar_zone_1_temperature` | `sensor.cantinetta_temperatura_zona_1` |
-| `sensor.wine_cellar_zone_1_humidity` | `sensor.cantinetta_umidita_zona_1` |
-| `select.wine_cellar_zone_1_program` | `select.cantinetta_programma_zona_1` |
-| `number.wine_cellar_zone_1_target_temperature` | `number.cantinetta_temperatura_impostata_zona_1` |
+| `sensor.wine_cellar_upper_zone_temperature` | `sensor.cantinetta_temperatura_zona_superiore` |
+| `sensor.wine_cellar_upper_zone_humidity` | `sensor.cantinetta_umidita_zona_superiore` |
+| `select.wine_cellar_upper_zone_program` | `select.cantinetta_programma_zona_superiore` |
+| `number.wine_cellar_upper_zone_target_temperature` | `number.cantinetta_temperatura_impostata_zona_superiore` |
 | `sensor.wine_cellar_room_temperature` | `sensor.cantinetta_temperatura_ambiente` |
 | `sensor.wine_cellar_error_code` | `sensor.cantinetta_codice_errore` |
 | `light.wine_cellar_light` | `light.cantinetta_luce` |
 
-Zone 2 entities are the same with `2` in place of `1`.
+The lower zone uses `lower_zone` / `zona_inferiore` in place of `upper_zone` / `zona_superiore`.
+On a single-zone cellar the zone is called `zone_1` / `zona_1`. Installations from before v0.5.0
+keep their original `zone_1` / `zone_2` IDs.
 
 ### Things worth knowing
 
@@ -172,7 +188,7 @@ triggers:
 actions:
   - action: homeassistant.update_entity
     target:
-      entity_id: sensor.wine_cellar_zone_1_temperature
+      entity_id: sensor.wine_cellar_upper_zone_temperature
 ```
 
 **Less often, or on your own schedule**: Settings → Devices & services → hOn Wine Cellar → ⋮ →

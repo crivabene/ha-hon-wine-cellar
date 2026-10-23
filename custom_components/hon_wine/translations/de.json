@@ -48,6 +48,18 @@
       },
       "error": {
         "name": "Fehlercode"
+      },
+      "upper_temperature": {
+        "name": "Temperatur obere Zone"
+      },
+      "lower_temperature": {
+        "name": "Temperatur untere Zone"
+      },
+      "upper_humidity": {
+        "name": "Luftfeuchtigkeit obere Zone"
+      },
+      "lower_humidity": {
+        "name": "Luftfeuchtigkeit untere Zone"
       }
     },
     "number": {
@@ -56,6 +68,12 @@
       },
       "zone_2_target": {
         "name": "Solltemperatur Zone 2"
+      },
+      "upper_target": {
+        "name": "Solltemperatur obere Zone"
+      },
+      "lower_target": {
+        "name": "Solltemperatur untere Zone"
       }
     },
     "select": {
@@ -74,6 +92,32 @@
       },
       "zone_2_program": {
         "name": "Programm Zone 2",
+        "state": {
+          "red": "Rotwein",
+          "white": "Weißwein",
+          "sparkling": "Schaumwein",
+          "iot_rose": "Rosé",
+          "iot_champagne": "Champagner",
+          "iot_dessert": "Dessertwein",
+          "iot_fortified": "Likörwein",
+          "iot_whisky": "Whisky"
+        }
+      },
+      "upper_program": {
+        "name": "Programm obere Zone",
+        "state": {
+          "red": "Rotwein",
+          "white": "Weißwein",
+          "sparkling": "Schaumwein",
+          "iot_rose": "Rosé",
+          "iot_champagne": "Champagner",
+          "iot_dessert": "Dessertwein",
+          "iot_fortified": "Likörwein",
+          "iot_whisky": "Whisky"
+        }
+      },
+      "lower_program": {
+        "name": "Programm untere Zone",
         "state": {
           "red": "Rotwein",
           "white": "Weißwein",

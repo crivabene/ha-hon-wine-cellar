@@ -48,6 +48,18 @@
       },
       "error": {
         "name": "Error code"
+      },
+      "upper_temperature": {
+        "name": "Upper zone temperature"
+      },
+      "lower_temperature": {
+        "name": "Lower zone temperature"
+      },
+      "upper_humidity": {
+        "name": "Upper zone humidity"
+      },
+      "lower_humidity": {
+        "name": "Lower zone humidity"
       }
     },
     "number": {
@@ -56,6 +68,12 @@
       },
       "zone_2_target": {
         "name": "Zone 2 target temperature"
+      },
+      "upper_target": {
+        "name": "Upper zone target temperature"
+      },
+      "lower_target": {
+        "name": "Lower zone target temperature"
       }
     },
     "select": {
@@ -74,6 +92,32 @@
       },
       "zone_2_program": {
         "name": "Zone 2 program",
+        "state": {
+          "red": "Red",
+          "white": "White",
+          "sparkling": "Sparkling",
+          "iot_rose": "Rosé",
+          "iot_champagne": "Champagne",
+          "iot_dessert": "Dessert wine",
+          "iot_fortified": "Fortified wine",
+          "iot_whisky": "Whisky"
+        }
+      },
+      "upper_program": {
+        "name": "Upper zone program",
+        "state": {
+          "red": "Red",
+          "white": "White",
+          "sparkling": "Sparkling",
+          "iot_rose": "Rosé",
+          "iot_champagne": "Champagne",
+          "iot_dessert": "Dessert wine",
+          "iot_fortified": "Fortified wine",
+          "iot_whisky": "Whisky"
+        }
+      },
+      "lower_program": {
+        "name": "Lower zone program",
         "state": {
           "red": "Red",
           "white": "White",

@@ -48,6 +48,18 @@
       },
       "error": {
         "name": "Foutcode"
+      },
+      "upper_temperature": {
+        "name": "Temperatuur bovenste zone"
+      },
+      "lower_temperature": {
+        "name": "Temperatuur onderste zone"
+      },
+      "upper_humidity": {
+        "name": "Luchtvochtigheid bovenste zone"
+      },
+      "lower_humidity": {
+        "name": "Luchtvochtigheid onderste zone"
       }
     },
     "number": {
@@ -56,6 +68,12 @@
       },
       "zone_2_target": {
         "name": "Doeltemperatuur zone 2"
+      },
+      "upper_target": {
+        "name": "Doeltemperatuur bovenste zone"
+      },
+      "lower_target": {
+        "name": "Doeltemperatuur onderste zone"
       }
     },
     "select": {
@@ -74,6 +92,32 @@
       },
       "zone_2_program": {
         "name": "Programma zone 2",
+        "state": {
+          "red": "Rode wijn",
+          "white": "Witte wijn",
+          "sparkling": "Mousserende wijn",
+          "iot_rose": "Rosé",
+          "iot_champagne": "Champagne",
+          "iot_dessert": "Dessertwijn",
+          "iot_fortified": "Versterkte wijn",
+          "iot_whisky": "Whisky"
+        }
+      },
+      "upper_program": {
+        "name": "Programma bovenste zone",
+        "state": {
+          "red": "Rode wijn",
+          "white": "Witte wijn",
+          "sparkling": "Mousserende wijn",
+          "iot_rose": "Rosé",
+          "iot_champagne": "Champagne",
+          "iot_dessert": "Dessertwijn",
+          "iot_fortified": "Versterkte wijn",
+          "iot_whisky": "Whisky"
+        }
+      },
+      "lower_program": {
+        "name": "Programma onderste zone",
         "state": {
           "red": "Rode wijn",
           "white": "Witte wijn",

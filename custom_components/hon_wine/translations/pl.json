@@ -48,6 +48,18 @@
       },
       "error": {
         "name": "Kod błędu"
+      },
+      "upper_temperature": {
+        "name": "Temperatura strefy górnej"
+      },
+      "lower_temperature": {
+        "name": "Temperatura strefy dolnej"
+      },
+      "upper_humidity": {
+        "name": "Wilgotność strefy górnej"
+      },
+      "lower_humidity": {
+        "name": "Wilgotność strefy dolnej"
       }
     },
     "number": {
@@ -56,6 +68,12 @@
       },
       "zone_2_target": {
         "name": "Temperatura zadana strefy 2"
+      },
+      "upper_target": {
+        "name": "Temperatura zadana strefy górnej"
+      },
+      "lower_target": {
+        "name": "Temperatura zadana strefy dolnej"
       }
     },
     "select": {
@@ -74,6 +92,32 @@
       },
       "zone_2_program": {
         "name": "Program strefy 2",
+        "state": {
+          "red": "Czerwone",
+          "white": "Białe",
+          "sparkling": "Musujące",
+          "iot_rose": "Różowe",
+          "iot_champagne": "Szampan",
+          "iot_dessert": "Wino deserowe",
+          "iot_fortified": "Wino wzmacniane",
+          "iot_whisky": "Whisky"
+        }
+      },
+      "upper_program": {
+        "name": "Program strefy górnej",
+        "state": {
+          "red": "Czerwone",
+          "white": "Białe",
+          "sparkling": "Musujące",
+          "iot_rose": "Różowe",
+          "iot_champagne": "Szampan",
+          "iot_dessert": "Wino deserowe",
+          "iot_fortified": "Wino wzmacniane",
+          "iot_whisky": "Whisky"
+        }
+      },
+      "lower_program": {
+        "name": "Program strefy dolnej",
         "state": {
           "red": "Czerwone",
           "white": "Białe",

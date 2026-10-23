@@ -30,7 +30,7 @@ async def async_setup_entry(
 
 class ZoneProgram(WineCellarEntity, SelectEntity):
     def __init__(self, cellar, zone: int) -> None:
-        super().__init__(cellar, ZONES[zone]["program"], f"zone_{zone}_program")
+        super().__init__(cellar, ZONES[zone]["program"], f"{cellar.zone_name(zone)}_program")
         self._zone = zone
         # Base programs first, then recipes, each from coldest to warmest
         self._attr_options = [

@@ -48,6 +48,18 @@
       },
       "error": {
         "name": "Codice errore"
+      },
+      "upper_temperature": {
+        "name": "Temperatura zona superiore"
+      },
+      "lower_temperature": {
+        "name": "Temperatura zona inferiore"
+      },
+      "upper_humidity": {
+        "name": "Umidità zona superiore"
+      },
+      "lower_humidity": {
+        "name": "Umidità zona inferiore"
       }
     },
     "number": {
@@ -56,6 +68,12 @@
       },
       "zone_2_target": {
         "name": "Temperatura impostata zona 2"
+      },
+      "upper_target": {
+        "name": "Temperatura impostata zona superiore"
+      },
+      "lower_target": {
+        "name": "Temperatura impostata zona inferiore"
       }
     },
     "select": {
@@ -74,6 +92,32 @@
       },
       "zone_2_program": {
         "name": "Programma zona 2",
+        "state": {
+          "red": "Rossi",
+          "white": "Bianchi",
+          "sparkling": "Bollicine",
+          "iot_rose": "Rosé",
+          "iot_champagne": "Champagne",
+          "iot_dessert": "Vini da dessert",
+          "iot_fortified": "Vini liquorosi",
+          "iot_whisky": "Whisky"
+        }
+      },
+      "upper_program": {
+        "name": "Programma zona superiore",
+        "state": {
+          "red": "Rossi",
+          "white": "Bianchi",
+          "sparkling": "Bollicine",
+          "iot_rose": "Rosé",
+          "iot_champagne": "Champagne",
+          "iot_dessert": "Vini da dessert",
+          "iot_fortified": "Vini liquorosi",
+          "iot_whisky": "Whisky"
+        }
+      },
+      "lower_program": {
+        "name": "Programma zona inferiore",
         "state": {
           "red": "Rossi",
           "white": "Bianchi",

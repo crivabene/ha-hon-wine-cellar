@@ -36,7 +36,7 @@ class ZoneTarget(WineCellarEntity, NumberEntity):
     _attr_native_step = 1
 
     def __init__(self, cellar, zone: int) -> None:
-        super().__init__(cellar, ZONES[zone]["target"], f"zone_{zone}_target")
+        super().__init__(cellar, ZONES[zone]["target"], f"{cellar.zone_name(zone)}_target")
         self._zone = zone
         self._attr_native_min_value = min(p.low for p in cellar.programs.values())
         self._attr_native_max_value = max(p.high for p in cellar.programs.values())

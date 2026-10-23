@@ -38,19 +38,11 @@ HUMIDITY = dict(
     suggested_display_precision=0,
 )
 
+ZONE_SENSORS = (
+    ("temp", "temperature", TEMPERATURE),
+    ("humidity", "humidity", HUMIDITY),
+)
 SENSORS = (
-    *(
-        CellarSensorDescription(
-            key=keys["temp"], translation_key=f"zone_{zone}_temperature", **TEMPERATURE
-        )
-        for zone, keys in ZONES.items()
-    ),
-    *(
-        CellarSensorDescription(
-            key=keys["humidity"], translation_key=f"zone_{zone}_humidity", **HUMIDITY
-        )
-        for zone, keys in ZONES.items()
-    ),
     CellarSensorDescription(key="tempEnv", translation_key="room_temperature", **TEMPERATURE),
     CellarSensorDescription(
         key="errors",
@@ -59,6 +51,17 @@ SENSORS = (
         numeric=False,
     ),
 )
+
+
+def _descriptions(cellar) -> list[CellarSensorDescription]:
+    zone_sensors = [
+        CellarSensorDescription(
+            key=ZONES[zone][field], translation_key=f"{cellar.zone_name(zone)}_{name}", **kind
+        )
+        for field, name, kind in ZONE_SENSORS
+        for zone in ZONES
+    ]
+    return [d for d in (*zone_sensors, *SENSORS) if d.key in cellar.data]
 
 
 # Read-only, fed by the coordinator
@@ -73,8 +76,7 @@ async def async_setup_entry(
     async_add_entities(
         CellarSensor(cellar, description)
         for cellar in entry.runtime_data
-        for description in SENSORS
-        if description.key in cellar.data
+        for description in _descriptions(cellar)
     )
 
 

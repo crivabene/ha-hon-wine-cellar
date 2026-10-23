@@ -48,6 +48,18 @@
       },
       "error": {
         "name": "Código de error"
+      },
+      "upper_temperature": {
+        "name": "Temperatura zona superior"
+      },
+      "lower_temperature": {
+        "name": "Temperatura zona inferior"
+      },
+      "upper_humidity": {
+        "name": "Humedad zona superior"
+      },
+      "lower_humidity": {
+        "name": "Humedad zona inferior"
       }
     },
     "number": {
@@ -56,6 +68,12 @@
       },
       "zone_2_target": {
         "name": "Temperatura objetivo zona 2"
+      },
+      "upper_target": {
+        "name": "Temperatura objetivo zona superior"
+      },
+      "lower_target": {
+        "name": "Temperatura objetivo zona inferior"
       }
     },
     "select": {
@@ -74,6 +92,32 @@
       },
       "zone_2_program": {
         "name": "Programa zona 2",
+        "state": {
+          "red": "Tinto",
+          "white": "Blanco",
+          "sparkling": "Espumoso",
+          "iot_rose": "Rosado",
+          "iot_champagne": "Champán",
+          "iot_dessert": "Vino de postre",
+          "iot_fortified": "Vino generoso",
+          "iot_whisky": "Whisky"
+        }
+      },
+      "upper_program": {
+        "name": "Programa zona superior",
+        "state": {
+          "red": "Tinto",
+          "white": "Blanco",
+          "sparkling": "Espumoso",
+          "iot_rose": "Rosado",
+          "iot_champagne": "Champán",
+          "iot_dessert": "Vino de postre",
+          "iot_fortified": "Vino generoso",
+          "iot_whisky": "Whisky"
+        }
+      },
+      "lower_program": {
+        "name": "Programa zona inferior",
         "state": {
           "red": "Tinto",
           "white": "Blanco",

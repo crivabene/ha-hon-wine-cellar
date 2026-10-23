@@ -48,6 +48,18 @@
       },
       "error": {
         "name": "Code d'erreur"
+      },
+      "upper_temperature": {
+        "name": "Température zone supérieure"
+      },
+      "lower_temperature": {
+        "name": "Température zone inférieure"
+      },
+      "upper_humidity": {
+        "name": "Humidité zone supérieure"
+      },
+      "lower_humidity": {
+        "name": "Humidité zone inférieure"
       }
     },
     "number": {
@@ -56,6 +68,12 @@
       },
       "zone_2_target": {
         "name": "Température de consigne zone 2"
+      },
+      "upper_target": {
+        "name": "Température de consigne zone supérieure"
+      },
+      "lower_target": {
+        "name": "Température de consigne zone inférieure"
       }
     },
     "select": {
@@ -74,6 +92,32 @@
       },
       "zone_2_program": {
         "name": "Programme zone 2",
+        "state": {
+          "red": "Vin rouge",
+          "white": "Vin blanc",
+          "sparkling": "Vin pétillant",
+          "iot_rose": "Rosé",
+          "iot_champagne": "Champagne",
+          "iot_dessert": "Vin de dessert",
+          "iot_fortified": "Vin muté",
+          "iot_whisky": "Whisky"
+        }
+      },
+      "upper_program": {
+        "name": "Programme zone supérieure",
+        "state": {
+          "red": "Vin rouge",
+          "white": "Vin blanc",
+          "sparkling": "Vin pétillant",
+          "iot_rose": "Rosé",
+          "iot_champagne": "Champagne",
+          "iot_dessert": "Vin de dessert",
+          "iot_fortified": "Vin muté",
+          "iot_whisky": "Whisky"
+        }
+      },
+      "lower_program": {
+        "name": "Programme zone inférieure",
         "state": {
           "red": "Vin rouge",
           "white": "Vin blanc",

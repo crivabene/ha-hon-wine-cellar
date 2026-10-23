@@ -298,6 +298,18 @@ class WineCellarCoordinator(DataUpdateCoordinator[dict[str, str]]):
         fits = [p for p in self.programs.values() if not p.recipe and p.fits(temperature)]
         return next((p for p in fits if p.key == preferred), fits[0] if fits else None)
 
+    @property
+    def zones(self) -> list[int]:
+        """Zones this cellar reports, e.g. [1, 2]."""
+        return [zone for zone, keys in ZONES.items() if keys["target"] in self.data]
+
+    def zone_name(self, zone: int) -> str:
+        """Translation key prefix: upper/lower on a two-zone cellar (zone 1 is the upper one
+        on the models seen so far), zone_<n> otherwise."""
+        if self.zones == [1, 2]:
+            return "upper" if zone == 1 else "lower"
+        return f"zone_{zone}"
+
     def zone_program(self, zone: int) -> Program | None:
         """The recipe last chosen while its temperature still holds, else the base program."""
         recipe = self.programs.get(self._recipes.get(zone, ""))
