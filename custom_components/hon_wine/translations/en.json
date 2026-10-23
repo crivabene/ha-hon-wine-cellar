@@ -1,0 +1,119 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "description": "Email and password of your hOn app account",
+        "data": {
+          "email": "Email",
+          "password": "Password"
+        }
+      },
+      "reauth_confirm": {
+        "description": "hOn no longer accepts the password for {email}. Enter the current one.",
+        "data": {
+          "password": "Password"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Login failed: check email and password.",
+      "cannot_connect": "Could not reach the hOn cloud."
+    },
+    "abort": {
+      "already_configured": "This hOn account is already configured.",
+      "reauth_successful": "Password updated."
+    }
+  },
+  "device": {
+    "cellar": {
+      "name": "Wine cellar"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "zone_1_temperature": {
+        "name": "Zone 1 temperature"
+      },
+      "zone_2_temperature": {
+        "name": "Zone 2 temperature"
+      },
+      "zone_1_humidity": {
+        "name": "Zone 1 humidity"
+      },
+      "zone_2_humidity": {
+        "name": "Zone 2 humidity"
+      },
+      "room_temperature": {
+        "name": "Room temperature"
+      },
+      "error": {
+        "name": "Error code"
+      }
+    },
+    "number": {
+      "zone_1_target": {
+        "name": "Zone 1 target temperature"
+      },
+      "zone_2_target": {
+        "name": "Zone 2 target temperature"
+      }
+    },
+    "select": {
+      "zone_1_program": {
+        "name": "Zone 1 program",
+        "state": {
+          "red": "Red",
+          "white": "White",
+          "sparkling": "Sparkling",
+          "iot_rose": "Rosé",
+          "iot_champagne": "Champagne",
+          "iot_dessert": "Dessert wine",
+          "iot_fortified": "Fortified wine",
+          "iot_whisky": "Whisky"
+        }
+      },
+      "zone_2_program": {
+        "name": "Zone 2 program",
+        "state": {
+          "red": "Red",
+          "white": "White",
+          "sparkling": "Sparkling",
+          "iot_rose": "Rosé",
+          "iot_champagne": "Champagne",
+          "iot_dessert": "Dessert wine",
+          "iot_fortified": "Fortified wine",
+          "iot_whisky": "Whisky"
+        }
+      }
+    },
+    "light": {
+      "light": {
+        "name": "Light"
+      }
+    }
+  },
+  "exceptions": {
+    "command_failed": {
+      "message": "The wine cellar did not accept the command: {error}"
+    },
+    "out_of_range": {
+      "message": "{temperature} °C is outside the {program} range ({low}–{high} °C)"
+    },
+    "no_program": {
+      "message": "No program covers {temperature} °C"
+    }
+  },
+  "issues": {
+    "unexpected_change": {
+      "title": "Wine cellar changed unexpectedly",
+      "fix_flow": {
+        "step": {
+          "confirm": {
+            "title": "Wine cellar changed unexpectedly",
+            "description": "After a command from Home Assistant the cellar also changed: {changes}.\n\nCheck both zones in the hOn app, then confirm to dismiss this warning."
+          }
+        }
+      }
+    }
+  }
+}

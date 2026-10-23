@@ -1,0 +1,119 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "description": "Email e password dell'account dell'app hOn",
+        "data": {
+          "email": "Email",
+          "password": "Password"
+        }
+      },
+      "reauth_confirm": {
+        "description": "hOn non accetta più la password di {email}. Inserisci quella attuale.",
+        "data": {
+          "password": "Password"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Login fallito: controlla email e password.",
+      "cannot_connect": "Cloud hOn non raggiungibile."
+    },
+    "abort": {
+      "already_configured": "Account hOn già configurato.",
+      "reauth_successful": "Password aggiornata."
+    }
+  },
+  "device": {
+    "cellar": {
+      "name": "Cantinetta"
+    }
+  },
+  "entity": {
+    "sensor": {
+      "zone_1_temperature": {
+        "name": "Temperatura zona 1"
+      },
+      "zone_2_temperature": {
+        "name": "Temperatura zona 2"
+      },
+      "zone_1_humidity": {
+        "name": "Umidità zona 1"
+      },
+      "zone_2_humidity": {
+        "name": "Umidità zona 2"
+      },
+      "room_temperature": {
+        "name": "Temperatura ambiente"
+      },
+      "error": {
+        "name": "Codice errore"
+      }
+    },
+    "number": {
+      "zone_1_target": {
+        "name": "Temperatura impostata zona 1"
+      },
+      "zone_2_target": {
+        "name": "Temperatura impostata zona 2"
+      }
+    },
+    "select": {
+      "zone_1_program": {
+        "name": "Programma zona 1",
+        "state": {
+          "red": "Rossi",
+          "white": "Bianchi",
+          "sparkling": "Bollicine",
+          "iot_rose": "Rosé",
+          "iot_champagne": "Champagne",
+          "iot_dessert": "Vini da dessert",
+          "iot_fortified": "Vini liquorosi",
+          "iot_whisky": "Whisky"
+        }
+      },
+      "zone_2_program": {
+        "name": "Programma zona 2",
+        "state": {
+          "red": "Rossi",
+          "white": "Bianchi",
+          "sparkling": "Bollicine",
+          "iot_rose": "Rosé",
+          "iot_champagne": "Champagne",
+          "iot_dessert": "Vini da dessert",
+          "iot_fortified": "Vini liquorosi",
+          "iot_whisky": "Whisky"
+        }
+      }
+    },
+    "light": {
+      "light": {
+        "name": "Luce"
+      }
+    }
+  },
+  "exceptions": {
+    "command_failed": {
+      "message": "La cantinetta non ha accettato il comando: {error}"
+    },
+    "out_of_range": {
+      "message": "{temperature} °C è fuori dall'intervallo di {program} ({low}–{high} °C)"
+    },
+    "no_program": {
+      "message": "Nessun programma copre {temperature} °C"
+    }
+  },
+  "issues": {
+    "unexpected_change": {
+      "title": "Modifica inattesa della cantinetta",
+      "fix_flow": {
+        "step": {
+          "confirm": {
+            "title": "Modifica inattesa della cantinetta",
+            "description": "Dopo un comando da Home Assistant è cambiato anche: {changes}.\n\nControlla entrambe le zone nell'app hOn, poi conferma per chiudere l'avviso."
+          }
+        }
+      }
+    }
+  }
+}

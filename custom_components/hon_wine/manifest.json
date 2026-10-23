@@ -1,0 +1,17 @@
+{
+  "domain": "hon_wine",
+  "name": "hOn Wine Cellar",
+  "codeowners": [
+    "@crivabene"
+  ],
+  "config_flow": true,
+  "dependencies": [
+    "repairs"
+  ],
+  "documentation": "https://github.com/crivabene/ha-hon-wine-cellar",
+  "integration_type": "hub",
+  "iot_class": "cloud_polling",
+  "issue_tracker": "https://github.com/crivabene/ha-hon-wine-cellar/issues",
+  "requirements": [],
+  "version": "0.1.0"
+}

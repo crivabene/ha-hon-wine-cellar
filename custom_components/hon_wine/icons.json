@@ -1,0 +1,18 @@
+{
+  "entity": {
+    "light": {
+      "light": { "default": "mdi:lightbulb-outline", "state": { "on": "mdi:lightbulb-on" } }
+    },
+    "number": {
+      "zone_1_target": { "default": "mdi:thermometer-check" },
+      "zone_2_target": { "default": "mdi:thermometer-check" }
+    },
+    "select": {
+      "zone_1_program": { "default": "mdi:bottle-wine" },
+      "zone_2_program": { "default": "mdi:bottle-wine" }
+    },
+    "sensor": {
+      "error": { "default": "mdi:alert-circle-outline" }
+    }
+  }
+}
