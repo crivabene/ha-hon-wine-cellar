@@ -58,17 +58,43 @@ Programs, codes and ranges are read from the cloud's definitions for the model, 
 
 ## Installation
 
-### HACS
+Requires Home Assistant 2026.10 or later and an hOn app account with the cellar already set up
+in the app.
 
-1. HACS → ⋮ → Custom repositories → add this repository, category *Integration*.
-2. Download **hOn Wine Cellar** and restart Home Assistant.
-3. Settings → Devices & services → Add integration → **hOn Wine Cellar**, then sign in with the
-   email and password of your hOn app account.
+### HACS (recommended)
+
+[![Open your Home Assistant instance and open this repository in HACS.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=crivabene&repository=ha-hon-wine-cellar&category=integration)
+
+Or by hand: HACS → ⋮ → **Custom repositories** → add
+`https://github.com/crivabene/ha-hon-wine-cellar`, type **Integration**.
+
+Then download **hOn Wine Cellar** in HACS and restart Home Assistant. HACS will offer updates
+when a new release comes out.
 
 ### Manual
 
-Copy `custom_components/hon_wine` into your Home Assistant `config/custom_components/` folder and
-restart.
+1. Download `hon_wine.zip` from the
+   [latest release](https://github.com/crivabene/ha-hon-wine-cellar/releases/latest).
+2. Extract it into `config/custom_components/hon_wine/` (create the folders if needed), so that
+   `config/custom_components/hon_wine/manifest.json` exists.
+3. Restart Home Assistant.
+
+From the Terminal & SSH add-on, the same in one go:
+
+```sh
+mkdir -p /config/custom_components/hon_wine && cd /config/custom_components/hon_wine && \
+  wget -q https://github.com/crivabene/ha-hon-wine-cellar/releases/latest/download/hon_wine.zip && \
+  unzip -o hon_wine.zip && rm hon_wine.zip
+```
+
+To update, repeat the steps with the new release.
+
+### Set up
+
+[![Open your Home Assistant instance and start setting up hOn Wine Cellar.](https://my.home-assistant.io/badges/config_flow_start.svg)](https://my.home-assistant.io/redirect/config_flow_start/?domain=hon_wine)
+
+Or: Settings → Devices & services → **Add integration** → **hOn Wine Cellar**, then sign in with
+the email and password of your hOn app account.
 
 Do not run it alongside another hOn integration for the same cellar: their `settings` commands
 would still reset the zones.
