@@ -46,6 +46,102 @@ Per cellar:
 
 Programs, codes and ranges are read from the cloud's definitions for the model, not hard-coded.
 
+### Dashboard example
+
+A card with both zones, their program and target, the light, an error warning and the last two
+days. In a dashboard: **Edit → Add card → Manual**, then paste:
+
+```yaml
+type: vertical-stack
+cards:
+  - type: heading
+    heading: Wine cellar
+    icon: mdi:bottle-wine
+  - type: grid
+    columns: 2
+    square: false
+    cards:
+      - type: tile
+        entity: sensor.wine_cellar_zone_1_temperature
+        name: Zone 1
+        color: red
+      - type: tile
+        entity: sensor.wine_cellar_zone_2_temperature
+        name: Zone 2
+        color: amber
+      - type: tile
+        entity: select.wine_cellar_zone_1_program
+        name: Program
+        features:
+          - type: select-options
+      - type: tile
+        entity: select.wine_cellar_zone_2_program
+        name: Program
+        features:
+          - type: select-options
+      - type: tile
+        entity: number.wine_cellar_zone_1_target_temperature
+        name: Target
+        features:
+          - type: numeric-input
+            style: buttons
+      - type: tile
+        entity: number.wine_cellar_zone_2_target_temperature
+        name: Target
+        features:
+          - type: numeric-input
+            style: buttons
+      - type: tile
+        entity: sensor.wine_cellar_zone_1_humidity
+        name: Humidity
+        color: blue
+      - type: tile
+        entity: sensor.wine_cellar_zone_2_humidity
+        name: Humidity
+        color: blue
+  - type: tile
+    entity: light.wine_cellar_light
+    name: Light
+    features:
+      - type: toggle
+  - type: conditional
+    conditions:
+      - condition: state
+        entity: sensor.wine_cellar_error_code
+        state_not: "00"
+    card:
+      type: markdown
+      content: >-
+        ⚠️ **The wine cellar reports an error** (code
+        `{{ states('sensor.wine_cellar_error_code') }}`).
+  - type: history-graph
+    title: Last 48 hours
+    hours_to_show: 48
+    entities:
+      - entity: sensor.wine_cellar_zone_1_temperature
+        name: Zone 1
+      - entity: sensor.wine_cellar_zone_2_temperature
+        name: Zone 2
+      - entity: sensor.wine_cellar_room_temperature
+        name: Room
+```
+
+Entity IDs follow the device name and the language Home Assistant had when the integration was
+set up. The example uses the English ones; if yours differ, find them under
+**Settings → Devices & services → hOn Wine Cellar → device**, or pick them in the card editor.
+
+| English | Italian |
+|---|---|
+| `sensor.wine_cellar_zone_1_temperature` | `sensor.cantinetta_temperatura_zona_1` |
+| `sensor.wine_cellar_zone_1_humidity` | `sensor.cantinetta_umidita_zona_1` |
+| `select.wine_cellar_zone_1_program` | `select.cantinetta_programma_zona_1` |
+| `number.wine_cellar_zone_1_target_temperature` | `number.cantinetta_temperatura_impostata_zona_1` |
+| `sensor.wine_cellar_room_temperature` | `sensor.cantinetta_temperatura_ambiente` |
+| `sensor.wine_cellar_error_code` | `sensor.cantinetta_codice_errore` |
+| `light.wine_cellar_light` | `light.cantinetta_luce` |
+
+Zone 2 entities are the same with `2` in place of `1`.
+
 ### Things worth knowing
 
 - The cellar works in **whole °F** internally: a 16 °C target is stored as 61 °F and reported back
