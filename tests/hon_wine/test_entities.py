@@ -4,9 +4,7 @@ from datetime import timedelta
 
 from homeassistant.exceptions import HomeAssistantError, ServiceValidationError
 from homeassistant.helpers import device_registry as dr, issue_registry as ir
-from homeassistant.util import dt as dt_util
 import pytest
-from pytest_homeassistant_custom_component.common import async_fire_time_changed
 
 from . import fixtures
 
@@ -62,9 +60,9 @@ async def test_target_switches_program_by_range(hass, entry, cloud):
     assert hass.states.get("select.my_cellar_zone_2_program").state == "sparkling"
 
 
-async def test_program_keeps_target_when_it_fits(hass, entry, cloud):
+async def test_program_keeps_target_when_it_fits(hass, entry, cloud, next_poll):
     cloud.state["tempSelZ2"] = "10"
-    await entry.runtime_data[0].async_refresh()
+    await next_poll()
     await hass.services.async_call(
         "select",
         "select_option",
@@ -128,34 +126,37 @@ async def test_never_sends_settings(hass, entry, cloud):
     assert {call["command"] for call in cloud.sent} == {"startProgram"}
 
 
-async def test_pending_value_survives_stale_cloud(hass, entry, cloud):
+async def test_pending_value_survives_stale_cloud(hass, entry, cloud, advance, next_poll):
     await hass.services.async_call(
         "number",
         "set_value",
         {"entity_id": "number.my_cellar_zone_1_target_temperature", "value": 18},
         blocking=True,
     )
-    # Next poll: the cloud has not caught up yet and still reports 16.1
-    async_fire_time_changed(hass, dt_util.utcnow() + timedelta(seconds=61))
-    await hass.async_block_till_done()
+    # Confirming re-read: the cloud has not caught up yet and still reports 16.1
+    before = cloud.snapshots
+    await advance(timedelta(seconds=16))
+    assert cloud.snapshots == before + 1
     assert hass.states.get("number.my_cellar_zone_1_target_temperature").state == "18"
+    # If the cloud never reflects it, its value wins once the pending one expires
+    await next_poll()
+    assert hass.states.get("number.my_cellar_zone_1_target_temperature").state == "16"
 
 
-async def test_guard_notifies_when_other_zone_changes(hass, entry, cloud):
+async def test_guard_notifies_when_other_zone_changes(hass, entry, cloud, next_poll):
     await hass.services.async_call(
         "light", "turn_on", {"entity_id": "light.my_cellar_light"}, blocking=True
     )
     # The cellar reset zone 2 after our light command
     cloud.state.update({"lightStatus": "1", "prCodeZ2": "3", "tempSelZ2": "5"})
-    async_fire_time_changed(hass, dt_util.utcnow() + timedelta(seconds=61))
-    await hass.async_block_till_done()
+    await next_poll()
     issue = ir.async_get(hass).async_get_issue("hon_wine", f"unexpected_change_{entry.entry_id}")
     assert issue is not None and issue.is_fixable
     assert issue.translation_key == "unexpected_change"
     assert "tempSelZ2: 12.2 → 5" in issue.translation_placeholders["changes"]
 
 
-async def test_guard_quiet_when_other_zone_unchanged(hass, entry, cloud):
+async def test_guard_quiet_when_other_zone_unchanged(hass, entry, cloud, next_poll):
     await hass.services.async_call(
         "number",
         "set_value",
@@ -163,15 +164,13 @@ async def test_guard_quiet_when_other_zone_unchanged(hass, entry, cloud):
         blocking=True,
     )
     cloud.state.update({"tempSel": "17.1"})
-    async_fire_time_changed(hass, dt_util.utcnow() + timedelta(seconds=61))
-    await hass.async_block_till_done()
+    await next_poll()
     assert not ir.async_get(hass).issues
 
 
-async def test_unavailable_when_disconnected(hass, entry, cloud):
+async def test_unavailable_when_disconnected(hass, entry, cloud, next_poll):
     cloud.connected = False
-    async_fire_time_changed(hass, dt_util.utcnow() + timedelta(seconds=61))
-    await hass.async_block_till_done()
+    await next_poll()
     assert hass.states.get("sensor.my_cellar_zone_1_temperature").state == "unavailable"
 
 
@@ -186,19 +185,18 @@ async def test_cloud_rejection_raises(hass, entry, cloud):
     assert err.value.translation_key == "command_failed"
 
 
-async def test_rereads_soon_after_a_write(hass, entry, cloud):
+async def test_rereads_soon_after_a_write(hass, entry, cloud, advance):
     before = cloud.snapshots
     await hass.services.async_call(
         "light", "turn_on", {"entity_id": "light.my_cellar_light"}, blocking=True
     )
-    async_fire_time_changed(hass, dt_util.utcnow() + timedelta(seconds=16))
-    await hass.async_block_till_done()
+    await advance(timedelta(seconds=16))
     assert cloud.snapshots == before + 1
 
 
-async def test_select_unknown_program_code(hass, entry, cloud):
+async def test_select_unknown_program_code(hass, entry, cloud, next_poll):
     cloud.state["prCodeZ2"] = "9"
-    await entry.runtime_data[0].async_refresh()
+    await next_poll()
     await hass.async_block_till_done()
     assert hass.states.get("select.my_cellar_zone_2_program").state == "unknown"
 
@@ -237,7 +235,7 @@ async def test_recipe_sends_only_temperature(hass, entry, cloud):
     assert hass.states.get("select.my_cellar_zone_2_program").state == "iot_rose"
 
 
-async def test_recipe_still_shown_once_cellar_runs_base_program(hass, entry, cloud):
+async def test_recipe_still_shown_once_cellar_runs_base_program(hass, entry, cloud, next_poll):
     await hass.services.async_call(
         "select",
         "select_option",
@@ -246,40 +244,40 @@ async def test_recipe_still_shown_once_cellar_runs_base_program(hass, entry, clo
     )
     # The cellar itself only knows base programs: Rosé at 6 °C runs as sparkling
     cloud.state.update(fixtures.ROSE_STATE)
-    await entry.runtime_data[0].async_refresh()
+    await next_poll()
     assert hass.states.get("select.my_cellar_zone_2_program").state == "iot_rose"
     assert hass.states.get("number.my_cellar_zone_2_target_temperature").state == "6"
 
 
-async def test_recipe_chosen_in_app(hass, entry, cloud):
+async def test_recipe_chosen_in_app(hass, entry, cloud, next_poll):
     cloud.state.update(fixtures.ROSE_STATE)
     cloud.last_command = fixtures.ROSE_COMMAND
-    await entry.runtime_data[0].async_refresh()
+    await next_poll()
     assert hass.states.get("select.my_cellar_zone_2_program").state == "iot_rose"
     # zone 1 is untouched
     assert hass.states.get("select.my_cellar_zone_1_program").state == "red"
 
 
-async def test_base_program_chosen_in_app_replaces_recipe(hass, entry, cloud):
+async def test_base_program_chosen_in_app_replaces_recipe(hass, entry, cloud, next_poll):
     cloud.state.update(fixtures.ROSE_STATE)
     cloud.last_command = fixtures.ROSE_COMMAND
-    await entry.runtime_data[0].async_refresh()
+    await next_poll()
     cloud.state.update({"prCodeZ2": "2", "tempSelZ2": "12.2"})
     cloud.last_command = fixtures.WHITE_COMMAND
-    await entry.runtime_data[0].async_refresh()
+    await next_poll()
     assert hass.states.get("select.my_cellar_zone_2_program").state == "white"
 
 
-async def test_recipe_dropped_when_temperature_moves(hass, entry, cloud):
+async def test_recipe_dropped_when_temperature_moves(hass, entry, cloud, next_poll):
     cloud.state.update(fixtures.ROSE_STATE)
     cloud.last_command = fixtures.ROSE_COMMAND
-    await entry.runtime_data[0].async_refresh()
+    await next_poll()
     cloud.state.update({"tempSelZ2": "7.2"})  # changed on the cellar's own panel
-    await entry.runtime_data[0].async_refresh()
+    await next_poll()
     assert hass.states.get("select.my_cellar_zone_2_program").state == "sparkling"
 
 
-async def test_stale_command_history_ignored(hass, entry, cloud):
+async def test_stale_command_history_ignored(hass, entry, cloud, next_poll):
     await hass.services.async_call(
         "select",
         "select_option",
@@ -289,7 +287,7 @@ async def test_stale_command_history_ignored(hass, entry, cloud):
     # The cloud has not registered our command yet and still shows the older one
     cloud.state.update(fixtures.ROSE_STATE)
     cloud.last_command = fixtures.WHITE_COMMAND
-    await entry.runtime_data[0].async_refresh()
+    await next_poll()
     assert hass.states.get("select.my_cellar_zone_2_program").state == "iot_rose"
 
 
@@ -365,3 +363,66 @@ async def test_single_zone_cellar(hass, cloud, config_entry):
         blocking=True,
     )
     assert cloud.sent[-1]["parameters"] == {"prCode": "1", "tempSel": "18"}
+
+
+async def test_polls_every_five_minutes(hass, entry, cloud, advance):
+    before = cloud.snapshots
+    await advance(timedelta(minutes=4))
+    assert cloud.snapshots == before
+    await advance(timedelta(minutes=1, seconds=1))
+    assert cloud.snapshots == before + 1
+
+
+async def test_manual_refresh_limited_to_once_a_minute(hass, entry, cloud, advance):
+    """homeassistant.update_entity from an automation never reads the cloud within 60 s."""
+    from homeassistant.setup import async_setup_component
+
+    assert await async_setup_component(hass, "homeassistant", {})
+    entity = "sensor.my_cellar_zone_1_temperature"
+    before = cloud.snapshots
+    await hass.services.async_call(
+        "homeassistant", "update_entity", {"entity_id": entity}, blocking=True
+    )
+    assert cloud.snapshots == before  # just set up: too soon
+    await advance(timedelta(seconds=61))
+    cloud.state["temp"] = "13.3"
+    await hass.services.async_call(
+        "homeassistant", "update_entity", {"entity_id": entity}, blocking=True
+    )
+    assert cloud.snapshots == before + 1
+    assert hass.states.get(entity).state == "13.3"
+    await advance(timedelta(seconds=20))
+    await hass.services.async_call(
+        "homeassistant", "update_entity", {"entity_id": entity}, blocking=True
+    )
+    assert cloud.snapshots == before + 1
+
+
+async def test_polling_disabled(hass, cloud, config_entry, advance):
+    """With polling turned off in the system options, only explicit refreshes read the cloud."""
+    hass.config_entries.async_update_entry(config_entry, pref_disable_polling=True)
+    assert await hass.config_entries.async_setup(config_entry.entry_id)
+    await hass.async_block_till_done()
+    before = cloud.snapshots
+    await advance(timedelta(minutes=30))
+    assert cloud.snapshots == before
+    # A command is still confirmed by its re-read
+    await hass.services.async_call(
+        "light", "turn_on", {"entity_id": "light.my_cellar_light"}, blocking=True
+    )
+    await advance(timedelta(seconds=16))
+    assert cloud.snapshots == before + 1
+
+
+async def test_recipe_not_lost_between_polls(hass, entry, cloud, next_poll):
+    """The app picks Rosé, then switches the light: the context only shows the light."""
+    light = {
+        "commandName": "startProgram",
+        "parameters": {"lightStatus": "1"},
+        "timestamp": "2001-01-01T10:01:00.000Z",
+    }
+    cloud.client.history.return_value = [{"command": light}, {"command": fixtures.ROSE_COMMAND}]
+    cloud.last_command = light
+    cloud.state.update(fixtures.ROSE_STATE)
+    await next_poll()
+    assert hass.states.get("select.my_cellar_zone_2_program").state == "iot_rose"

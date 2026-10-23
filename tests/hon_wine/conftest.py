@@ -1,12 +1,14 @@
 """Fixtures: an hon_wine config entry backed by a fake hOn cloud."""
 
+from datetime import timedelta
 from unittest.mock import AsyncMock, patch
 
 import pytest
-from pytest_homeassistant_custom_component.common import MockConfigEntry
+from pytest_homeassistant_custom_component.common import MockConfigEntry, async_fire_time_changed
 
 from custom_components.hon_wine.api import Snapshot
 from custom_components.hon_wine.const import DOMAIN
+from custom_components.hon_wine.coordinator import POLL_INTERVAL
 
 from . import fixtures
 
@@ -44,7 +46,8 @@ class FakeCloud:
 
 
 @pytest.fixture
-def cloud():
+def cloud(freezer):
+    # The clock is frozen before setup, so polls are scheduled on the same clock tests move
     fake = FakeCloud()
     with patch("custom_components.hon_wine.HonClient", autospec=True) as client_cls:
         client = client_cls.return_value
@@ -83,3 +86,25 @@ async def entry_after_rose(hass, cloud, config_entry):
     assert await hass.config_entries.async_setup(config_entry.entry_id)
     await hass.async_block_till_done()
     return config_entry
+
+
+@pytest.fixture
+def advance(hass, freezer):
+    """Move the clock forward and run whatever was due."""
+
+    async def _advance(delta: timedelta) -> None:
+        freezer.tick(delta)
+        async_fire_time_changed(hass)
+        await hass.async_block_till_done()
+
+    return _advance
+
+
+@pytest.fixture
+def next_poll(advance):
+    """Let the next scheduled poll happen."""
+
+    async def _next_poll() -> None:
+        await advance(POLL_INTERVAL + timedelta(seconds=1))
+
+    return _next_poll

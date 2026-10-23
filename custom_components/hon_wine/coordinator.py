@@ -34,7 +34,12 @@ from .const import DOMAIN, ZONES
 
 _LOGGER = logging.getLogger(__name__)
 
-POLL_INTERVAL = timedelta(seconds=60)
+# A cellar changes slowly: every 5 minutes by default. Users who want more can disable
+# polling and refresh from an automation, down to MIN_REFRESH.
+POLL_INTERVAL = timedelta(minutes=5)
+# Never read the cloud more often than this, whatever asks (automations included); only the
+# re-read confirming a command may come sooner. 60 s is what Haier agreed to in 2024.
+MIN_REFRESH = 60  # seconds
 # Re-read this soon after a write, instead of waiting for the next poll
 CONFIRM_DELAY = 15  # seconds
 # How long a value we sent wins over cloud state that has not caught up yet
@@ -152,6 +157,8 @@ class WineCellarCoordinator(DataUpdateCoordinator[dict[str, str]]):
         self._guard: dict[str, str] = {}
         self._guard_until = 0.0
         self._cancel_confirm = None
+        self._confirm_due = False
+        self._last_fetch = float("-inf")
         # Recipe last chosen per zone, and the newest command already accounted for
         self._recipes: dict[int, str] = {}
         self._seen_command = ""
@@ -167,21 +174,30 @@ class WineCellarCoordinator(DataUpdateCoordinator[dict[str, str]]):
         )
 
     async def _async_update_data(self) -> dict[str, str]:
+        too_soon = time.monotonic() - self._last_fetch < MIN_REFRESH
+        if self.data is not None and too_soon and not self._confirm_due:
+            return self.data
+        self._confirm_due = False
         try:
             snapshot = await self.client.snapshot(self.appliance)
         except HonAuthError as err:
             raise ConfigEntryAuthFailed(str(err)) from err
         except HonError as err:
             raise UpdateFailed(str(err)) from err
+        self._last_fetch = time.monotonic()
         self.connected = snapshot.connected
-        if snapshot.last_command:
-            self._track_command(snapshot.last_command)
+        last = snapshot.last_command
+        if last and str(last.get("timestamp", "")) > self._seen_command:
+            # New commands since the last read: replay the history, not just the newest one,
+            # so a recipe chosen in the app and followed by e.g. the light is not lost
+            await self.async_replay_history()
+            self._track_command(last)
         values = self._overlay_pending(snapshot.values)
         self._check_guard(values)
         return values
 
-    async def async_load_recipes(self) -> None:
-        """Replay the command history, so a recipe chosen before a restart is still shown."""
+    async def async_replay_history(self) -> None:
+        """Account for every command received since the last one seen (e.g. a recipe)."""
         try:
             history = await self.client.history(self.appliance)
         except HonError as err:
@@ -268,6 +284,7 @@ class WineCellarCoordinator(DataUpdateCoordinator[dict[str, str]]):
 
     async def _confirm(self, _now) -> None:
         self._cancel_confirm = None
+        self._confirm_due = True
         await self.async_request_refresh()
 
     async def async_shutdown(self) -> None:

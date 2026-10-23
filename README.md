@@ -11,8 +11,9 @@ It sends exactly the commands the hOn app sends, so changing one zone never touc
 > change without notice, and using it may not be covered by the hOn terms of use. Use it at your
 > own risk, with your own hOn account.
 >
-> To keep the load on the hOn cloud low it polls once a minute (the interval agreed with Haier
-> for the original hOn integration in 2024) and re-reads once shortly after each command.
+> To keep the load on the hOn cloud low it reads the cellar every 5 minutes, never more than
+> once a minute whatever asks for it (the limit agreed with Haier for the original hOn
+> integration in 2024), plus once shortly after each command.
 > If Haier asks for this repository to be changed or removed, it will be.
 
 ## Why another hOn integration
@@ -150,7 +151,34 @@ Zone 2 entities are the same with `2` in place of `1`.
 - Recipes exist only in the app: they set a temperature and the cellar runs the base program whose
   range holds it (rosé → sparkling at 6 °C). The integration remembers the last recipe per zone from
   the cloud's command history, for as long as the target stays at the recipe's temperature.
-- Cloud polling every 60 s, plus a re-read 15 s after each command.
+- The cloud is read every 5 minutes, plus 15 s after each command to confirm it. Commands from
+  Home Assistant show up at once; changes made in the app or on the cellar take up to the next
+  read. See [Updating more or less often](#updating-more-or-less-often).
+
+### Updating more or less often
+
+A cellar changes slowly, so the default is one read every 5 minutes. You can change that with the
+standard Home Assistant method; whatever you set, the integration never reads the cloud more than
+once a minute.
+
+**More often** (e.g. to notice an error or a change made in the app sooner): add an automation
+that refreshes the cellar. Updating any one of its entities updates them all.
+
+```yaml
+alias: Wine cellar - refresh every minute
+triggers:
+  - trigger: time_pattern
+    minutes: "/1"
+actions:
+  - action: homeassistant.update_entity
+    target:
+      entity_id: sensor.wine_cellar_zone_1_temperature
+```
+
+**Less often, or on your own schedule**: Settings → Devices & services → hOn Wine Cellar → ⋮ →
+**System options** → turn off **Enable polling for changes**, then refresh from an automation
+like the one above, e.g. every 15 minutes (`minutes: "/15"`), only during the day, or when you
+open the dashboard. Commands are still confirmed by their own re-read.
 
 ## Installation
 

@@ -108,7 +108,7 @@ async def test_diagnostics_without_history(hass, hass_client, entry, cloud):
     assert diagnostics["cellars"][0]["history"].startswith("unavailable")
 
 
-async def test_repair_flow_dismisses_warning(hass, hass_client, entry, cloud):
+async def test_repair_flow_dismisses_warning(hass, hass_client, entry, cloud, next_poll):
     from homeassistant.helpers import issue_registry as ir
     from homeassistant.setup import async_setup_component
 
@@ -117,7 +117,7 @@ async def test_repair_flow_dismisses_warning(hass, hass_client, entry, cloud):
         "light", "turn_on", {"entity_id": "light.my_cellar_light"}, blocking=True
     )
     cloud.state.update({"prCodeZ2": "3", "tempSelZ2": "5"})
-    await entry.runtime_data[0].async_refresh()
+    await next_poll()
     issue_id = f"unexpected_change_{entry.entry_id}"
     assert ir.async_get(hass).async_get_issue(DOMAIN, issue_id)
 

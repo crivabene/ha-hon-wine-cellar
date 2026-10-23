@@ -43,7 +43,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: HonWineConfigEntry) -> b
     if not cellars:
         raise ConfigEntryNotReady("no wine cellar on this hOn account")
 
-    await asyncio.gather(*(cellar.async_load_recipes() for cellar in cellars))
+    await asyncio.gather(*(cellar.async_replay_history() for cellar in cellars))
     await asyncio.gather(*(cellar.async_config_entry_first_refresh() for cellar in cellars))
     entry.runtime_data = cellars
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)
