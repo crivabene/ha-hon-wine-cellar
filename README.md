@@ -205,11 +205,8 @@ in the app.
 
 [![Open your Home Assistant instance and open this repository in HACS.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=crivabene&repository=ha-hon-wine-cellar&category=integration)
 
-Or by hand: HACS → ⋮ → **Custom repositories** → add
-`https://github.com/crivabene/ha-hon-wine-cellar`, type **Integration**.
-
-Then download **hOn Wine Cellar** in HACS and restart Home Assistant. HACS will offer updates
-when a new release comes out.
+hOn Wine Cellar is in the HACS default store: open HACS, search for **hOn Wine Cellar**,
+download it and restart Home Assistant. HACS will offer updates when a new release comes out.
 
 ### Manual
 
