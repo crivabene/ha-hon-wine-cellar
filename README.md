@@ -201,12 +201,13 @@ open the dashboard. Commands are still confirmed by their own re-read.
 Requires Home Assistant 2026.10 or later and an hOn app account with the cellar already set up
 in the app.
 
-### HACS (recommended)
+### Marketplace (recommended)
 
 [![Open your Home Assistant instance and open this repository in HACS.](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=crivabene&repository=ha-hon-wine-cellar&category=integration)
 
-hOn Wine Cellar is in the HACS default store: open HACS, search for **hOn Wine Cellar**,
-download it and restart Home Assistant. HACS will offer updates when a new release comes out.
+Or open **Settings → Marketplace**, search for **hOn Wine Cellar**, download it and restart
+Home Assistant. On Home Assistant 2026.10, use HACS instead: the steps are the same.
+You will be offered updates when a new release comes out.
 
 ### Manual
 
