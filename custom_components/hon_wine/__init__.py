@@ -15,7 +15,13 @@ from .api import HonAuthError, HonClient, HonError
 from .const import WINE_CELLAR
 from .coordinator import WineCellarCoordinator
 
-PLATFORMS = [Platform.LIGHT, Platform.NUMBER, Platform.SELECT, Platform.SENSOR]
+PLATFORMS = [
+    Platform.BINARY_SENSOR,
+    Platform.LIGHT,
+    Platform.NUMBER,
+    Platform.SELECT,
+    Platform.SENSOR,
+]
 
 type HonWineConfigEntry = ConfigEntry[list[WineCellarCoordinator]]
 

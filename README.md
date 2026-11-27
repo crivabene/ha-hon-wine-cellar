@@ -44,6 +44,7 @@ Per cellar:
 - **Upper/lower zone target temperature** (number, 5–20 °C): the program follows from the range
 - **Upper/lower zone temperature** and **humidity**, **room temperature**, **error code** (sensors)
 - **Light**
+- **Connectivity** (binary sensor, diagnostic): whether the cellar is online in the hOn cloud
 
 Programs, codes and ranges are read from the cloud's definitions for the model, not hard-coded.
 On a cellar with one zone, or more than two, zones are numbered instead of upper/lower.
@@ -154,6 +155,7 @@ set up. The example uses the English ones; if yours differ, find them under
 | `sensor.wine_cellar_room_temperature` | `sensor.cantinetta_temperatura_ambiente` |
 | `sensor.wine_cellar_error_code` | `sensor.cantinetta_codice_errore` |
 | `light.wine_cellar_light` | `light.cantinetta_luce` |
+| `binary_sensor.wine_cellar_connectivity` | `binary_sensor.cantinetta_connettivita` |
 
 The lower zone uses `lower_zone` / `zona_inferiore` in place of `upper_zone` / `zona_superiore`.
 On a single-zone cellar the zone is called `zone_1` / `zona_1`. Installations from before v0.5.0
@@ -170,6 +172,12 @@ keep their original `zone_1` / `zone_2` IDs.
 - The cloud is read every 5 minutes, plus 15 s after each command to confirm it. Commands from
   Home Assistant show up at once; changes made in the app or on the cellar take up to the next
   read. See [Updating more or less often](#updating-more-or-less-often).
+
+- When the cellar drops off its Wi-Fi, **Connectivity** turns off and the sensors keep the last
+  values the cloud has, so you can see when it went quiet; light, program and target become
+  unavailable until it is back, because a command could not reach it. If the hOn cloud itself
+  cannot be reached, every entity is unavailable. An automation on Connectivity being off for an
+  hour or so is a good way to hear about it.
 
 ### Updating more or less often
 

@@ -168,10 +168,46 @@ async def test_guard_quiet_when_other_zone_unchanged(hass, entry, cloud, next_po
     assert not ir.async_get(hass).issues
 
 
-async def test_unavailable_when_disconnected(hass, entry, cloud, next_poll):
+async def test_connectivity_on_when_connected(hass, entry):
+    state = hass.states.get("binary_sensor.my_cellar_connectivity")
+    assert state.state == "on"
+    assert state.attributes["device_class"] == "connectivity"
+
+
+async def test_offline_keeps_readings_and_disables_controls(hass, entry, cloud, next_poll, caplog):
     cloud.connected = False
     await next_poll()
-    assert hass.states.get("sensor.my_cellar_upper_zone_temperature").state == "unavailable"
+    assert hass.states.get("binary_sensor.my_cellar_connectivity").state == "off"
+    # Last values the cloud has stay visible...
+    assert hass.states.get("sensor.my_cellar_upper_zone_temperature").state == "12.8"
+    assert hass.states.get("sensor.my_cellar_error_code").state == "00"
+    # ...but nothing can be sent to a cellar that is not there
+    for entity_id in (
+        "light.my_cellar_light",
+        "number.my_cellar_upper_zone_target_temperature",
+        "select.my_cellar_lower_zone_program",
+    ):
+        assert hass.states.get(entity_id).state == "unavailable"
+    assert "offline in the hOn cloud" in caplog.text
+
+    cloud.connected = True
+    await next_poll()
+    assert hass.states.get("binary_sensor.my_cellar_connectivity").state == "on"
+    assert hass.states.get("light.my_cellar_light").state == "off"
+    assert "back online" in caplog.text
+
+
+async def test_everything_unavailable_when_cloud_unreachable(hass, entry, cloud, next_poll):
+    from custom_components.hon_wine.api import HonError
+
+    cloud.client.snapshot.side_effect = HonError("timeout")
+    await next_poll()
+    for entity_id in (
+        "binary_sensor.my_cellar_connectivity",
+        "sensor.my_cellar_upper_zone_temperature",
+        "light.my_cellar_light",
+    ):
+        assert hass.states.get(entity_id).state == "unavailable"
 
 
 async def test_cloud_rejection_raises(hass, entry, cloud):

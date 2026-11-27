@@ -185,6 +185,14 @@ class WineCellarCoordinator(DataUpdateCoordinator[dict[str, str]]):
         except HonError as err:
             raise UpdateFailed(str(err)) from err
         self._last_fetch = time.monotonic()
+        if snapshot.connected != self.connected:
+            if snapshot.connected:
+                _LOGGER.info("%s is back online", self.name)
+            else:
+                _LOGGER.warning(
+                    "%s is offline in the hOn cloud: sensors keep the last values it reported",
+                    self.name,
+                )
         self.connected = snapshot.connected
         last = snapshot.last_command
         if last and str(last.get("timestamp", "")) > self._seen_command:
@@ -358,8 +366,13 @@ class WineCellarCoordinator(DataUpdateCoordinator[dict[str, str]]):
 
 class WineCellarEntity(CoordinatorEntity[WineCellarCoordinator]):
     _attr_has_entity_name = True
+    # Controls need the cellar online: a command sent while it is offline would not reach it.
+    # Read-only entities clear this and keep showing the last values the cloud has.
+    _requires_connection = True
 
-    def __init__(self, coordinator: WineCellarCoordinator, key: str, translation_key: str) -> None:
+    def __init__(
+        self, coordinator: WineCellarCoordinator, key: str, translation_key: str | None
+    ) -> None:
         super().__init__(coordinator)
         self._key = key
         self._attr_translation_key = translation_key
@@ -372,4 +385,4 @@ class WineCellarEntity(CoordinatorEntity[WineCellarCoordinator]):
 
     @property
     def available(self) -> bool:
-        return super().available and self.coordinator.connected
+        return super().available and (self.coordinator.connected or not self._requires_connection)

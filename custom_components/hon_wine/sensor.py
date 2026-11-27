@@ -82,6 +82,8 @@ async def async_setup_entry(
 
 class CellarSensor(WineCellarEntity, SensorEntity):
     entity_description: CellarSensorDescription
+    # The last reading stays visible while the cellar is offline; the connectivity sensor says so
+    _requires_connection = False
 
     def __init__(self, cellar, description: CellarSensorDescription) -> None:
         super().__init__(cellar, description.key, description.translation_key)
